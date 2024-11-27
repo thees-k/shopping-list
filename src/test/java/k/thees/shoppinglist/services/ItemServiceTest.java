@@ -39,30 +39,30 @@ class ItemServiceTest {
 	}
 
 	@Transactional
-	@Rollback
-	@Test
-	public void testCreate() {
-
-		var dateTime = LocalDateTime.of(2020, 1, 2, 3, 4);
-
-		Item item = Item
-				.builder()
-				.modifiedAt(dateTime)
-				.text("Carots")
-				.modifiedBy("Bugs B.")
-				.build();
-
-		Item savedItem = itemService.create(item);
-
-		// Validation only takes place when writing to the database
-		itemRepository.flush();
-
-		assertNotNull(savedItem);
-		assertNotNull(savedItem.getId());
-		assertNotNull(savedItem.getVersion());
-
-		assertTrue(item.equalsAnotherItem(savedItem));
-	}
+		@Rollback
+		@Test
+		public void testInsert() {
+	
+			var dateTime = LocalDateTime.of(2020, 1, 2, 3, 4);
+	
+			Item item = Item
+					.builder()
+					.modifiedAt(dateTime)
+					.text("Carots")
+					.modifiedBy("Bugs B.")
+					.build();
+	
+			Item savedItem = itemService.insert(item);
+	
+			// Validation only takes place when writing to the database
+			itemRepository.flush();
+	
+			assertNotNull(savedItem);
+			assertNotNull(savedItem.getId());
+			assertNotNull(savedItem.getVersion());
+	
+			assertTrue(item.equalsAnotherItem(savedItem));
+		}
 
 	@Transactional
 	@Rollback

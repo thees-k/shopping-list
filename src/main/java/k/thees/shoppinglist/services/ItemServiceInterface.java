@@ -12,7 +12,7 @@ public interface ItemServiceInterface {
 
 	Optional<Item> get(Integer id);
 
-	Item create(Item item);
+	Item insert(Item item);
 
 	Optional<Item> update(Integer id, Item item);
 

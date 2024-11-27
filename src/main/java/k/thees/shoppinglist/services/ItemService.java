@@ -29,7 +29,7 @@ public class ItemService implements ItemServiceInterface {
 	}
 
 	@Override
-	public Item create(Item item) {
+	public Item insert(Item item) {
 
 		return itemRepository.save(item);
 	}

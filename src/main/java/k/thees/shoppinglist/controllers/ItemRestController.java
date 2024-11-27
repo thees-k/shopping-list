@@ -47,7 +47,7 @@ public class ItemRestController {
 	@PostMapping(ITEMS_PATH)
 	public ResponseEntity<Item> create(@Validated @RequestBody Item item) {
 
-		Item savedItem = itemService.create(item);
+		Item savedItem = itemService.insert(item);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Location", ITEMS_PATH + "/" + savedItem.getId().toString());
