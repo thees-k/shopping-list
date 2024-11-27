@@ -1,6 +1,7 @@
 package k.thees.shoppinglist.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,4 +38,10 @@ public class Item {
 	private String modifiedBy;
 
 	private LocalDateTime modifiedAt;
+
+	public boolean equalsAnotherItem(Item otherItem) {
+		return Objects.equals(text, otherItem.text)
+				&& Objects.equals(modifiedBy, otherItem.modifiedBy)
+				&& Objects.equals(modifiedAt, otherItem.modifiedAt);
+	}
 }

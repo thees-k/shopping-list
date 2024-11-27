@@ -24,7 +24,6 @@ public class ItemRepositoryTest {
 
 		var dateTime = LocalDateTime.of(2024, 1, 2, 3, 4);
 
-
 		Item item = Item
 				.builder()
 				.modifiedAt(dateTime)

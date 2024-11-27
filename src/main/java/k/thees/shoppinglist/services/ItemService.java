@@ -37,12 +37,14 @@ public class ItemService implements ItemServiceInterface {
 	@Override
 	public Optional<Item> update(Integer id, Item changedItem) {
 
-		if(itemRepository.existsById(id)) {
-			itemRepository.findById(id).ifPresent(itemRepository::save);
-			return Optional.of(changedItem);
-		} else {
-			return Optional.empty();
-		}
+		return itemRepository.findById(id).map(item -> saveItemWithNewValues(item, changedItem));
+	}
+
+	private Item saveItemWithNewValues(Item item, Item valuesFromItem) {
+		item.setModifiedAt(valuesFromItem.getModifiedAt());
+		item.setModifiedBy(valuesFromItem.getModifiedBy());
+		item.setText(valuesFromItem.getText());
+		return itemRepository.save(item);
 	}
 
 	@Override
