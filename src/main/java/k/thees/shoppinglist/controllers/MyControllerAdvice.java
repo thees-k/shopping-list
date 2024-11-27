@@ -1,4 +1,4 @@
-package k.thees.controllers;
+package k.thees.shoppinglist.controllers;
 
 import java.util.HashMap;
 import java.util.List;

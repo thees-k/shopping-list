@@ -1,4 +1,4 @@
-package k.thees;
+package k.thees.shoppinglist;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

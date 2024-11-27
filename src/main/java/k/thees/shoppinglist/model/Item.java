@@ -1,4 +1,4 @@
-package k.thees.model;
+package k.thees.shoppinglist.model;
 
 import java.time.LocalDateTime;
 

@@ -1,12 +1,12 @@
-package k.thees.services;
+package k.thees.shoppinglist.services;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import k.thees.model.Item;
-import k.thees.repositories.ItemRepositoryInterface;
+import k.thees.shoppinglist.model.Item;
+import k.thees.shoppinglist.repositories.ItemRepositoryInterface;
 import lombok.RequiredArgsConstructor;
 
 @Service

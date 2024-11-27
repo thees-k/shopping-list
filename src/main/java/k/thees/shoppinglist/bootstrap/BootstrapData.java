@@ -1,12 +1,12 @@
-package k.thees.bootstrap;
+package k.thees.shoppinglist.bootstrap;
 
 import java.time.LocalDateTime;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import k.thees.model.Item;
-import k.thees.repositories.ItemRepositoryInterface;
+import k.thees.shoppinglist.model.Item;
+import k.thees.shoppinglist.repositories.ItemRepositoryInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

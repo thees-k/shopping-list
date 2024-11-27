@@ -1,9 +1,9 @@
-package k.thees.services;
+package k.thees.shoppinglist.services;
 
 import java.util.List;
 import java.util.Optional;
 
-import k.thees.model.Item;
+import k.thees.shoppinglist.model.Item;
 
 
 public interface ItemServiceInterface {

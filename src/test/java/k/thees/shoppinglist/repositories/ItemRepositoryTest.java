@@ -1,4 +1,4 @@
-package k.thees.repositories;
+package k.thees.shoppinglist.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import jakarta.validation.ConstraintViolationException;
-import k.thees.model.Item;
+import k.thees.shoppinglist.model.Item;
 
 @DataJpaTest
 public class ItemRepositoryTest {
