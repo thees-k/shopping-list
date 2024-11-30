@@ -58,6 +58,11 @@
 		         <groupId>org.springframework.boot</groupId>
 		         <artifactId>spring-boot-starter-validation</artifactId>
         	</dependency>
+		<dependency>
+			<!-- To prevent "Circular View Path Error", see https://www.baeldung.com/spring-circular-view-path-error -->
+			 <groupId>org.springframework.boot</groupId>
+			 <artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
