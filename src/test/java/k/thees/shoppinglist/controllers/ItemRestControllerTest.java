@@ -71,6 +71,7 @@ class ItemRestControllerTest {
 				.andExpect(buildMatcher("text", item.getText()))
 				.andExpect(buildMatcher("modifiedBy", item.getModifiedBy()))
 				.andExpect(buildMatcher("modifiedAt", item.getModifiedAt()))
+				.andExpect(buildMatcher("done", item.getDone()))
 				.andReturn();
 
 		// Get the JSON response as a string
@@ -147,6 +148,7 @@ class ItemRestControllerTest {
 				.text("Apples")
 				.modifiedAt(LocalDateTime.now())
 				.modifiedBy("Peter")
+				.done(false)
 				.build();
 
 		String json = objectMapper.writeValueAsString(item);
@@ -223,6 +225,7 @@ class ItemRestControllerTest {
 				.text("Tea")
 				.modifiedAt(LocalDateTime.now())
 				.modifiedBy("Joan")
+				.done(true)
 				.build();
 
 		mockMvc.perform(put(ItemRestController.ITEMS_PATH_ID, id)
@@ -253,7 +256,8 @@ class ItemRestControllerTest {
 		final Item updateItem = Item.builder()
 				.text("Coffee")
 				.modifiedAt(LocalDateTime.now())
-				.modifiedBy("Allan")
+				.modifiedBy("Alan")
+				.done(false)
 				.build();
 
 		mockMvc.perform(put(ItemRestController.ITEMS_PATH_ID, -1)

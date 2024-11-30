@@ -33,16 +33,19 @@ public class BootstrapData implements CommandLineRunner {
 					.modifiedAt(now)
 					.modifiedBy("Thees")
 					.text("Milk")
+					.done(true)
 					.build();
 			Item item2 = Item.builder()
 					.modifiedAt(now)
 					.modifiedBy("Sandra")
 					.text("Bananas")
+					.done(false)
 					.build();
 			Item item3 = Item.builder()
 					.modifiedAt(now)
 					.modifiedBy("Tiga")
 					.text("Cat Food")
+					.done(false)
 					.build();
 
 			itemRepository.save(item1);

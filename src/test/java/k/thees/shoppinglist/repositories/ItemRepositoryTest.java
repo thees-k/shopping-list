@@ -29,6 +29,7 @@ public class ItemRepositoryTest {
 				.modifiedAt(dateTime)
 				.text("Carots")
 				.modifiedBy("Bugs B.")
+				.done(true)
 				.build();
 
 		Item savedItem = itemRepository.save(item);

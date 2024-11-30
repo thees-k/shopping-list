@@ -44,6 +44,7 @@ public class ItemService implements ItemServiceInterface {
 		item.setModifiedAt(valuesFromItem.getModifiedAt());
 		item.setModifiedBy(valuesFromItem.getModifiedBy());
 		item.setText(valuesFromItem.getText());
+		item.setDone(valuesFromItem.getDone());
 		return itemRepository.save(item);
 	}
 

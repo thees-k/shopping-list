@@ -20,12 +20,14 @@ class ItemTest {
 				.text("text")
 				.modifiedBy("modifiedBy")
 				.modifiedAt(dateTime)
+				.done(false)
 				.build();
 
 		Item item2 = Item.builder()
 				.text("text")
 				.modifiedBy("modifiedBy")
 				.modifiedAt(dateTime)
+				.done(false)
 				.build();
 
 		assertTrue(item1.equalsAnotherItem(item2));
@@ -39,12 +41,14 @@ class ItemTest {
 				.text("text")
 				.modifiedBy("modifiedBy")
 				.modifiedAt(dateTime)
+				.done(false)
 				.build();
 
 		Item item2 = Item.builder()
 				.text("text X")
 				.modifiedBy("modifiedBy")
 				.modifiedAt(dateTime)
+				.done(false)
 				.build();
 		assertFalse(item1.equalsAnotherItem(item2));
 
@@ -52,6 +56,7 @@ class ItemTest {
 				.text("text")
 				.modifiedBy("modifiedBy X")
 				.modifiedAt(dateTime)
+				.done(false)
 				.build();
 		assertFalse(item1.equalsAnotherItem(item2));
 
@@ -59,6 +64,7 @@ class ItemTest {
 				.text("text")
 				.modifiedBy("modifiedBy")
 				.modifiedAt(LocalDateTime.now())
+				.done(false)
 				.build();
 		assertFalse(item1.equalsAnotherItem(item2));
 
@@ -66,7 +72,17 @@ class ItemTest {
 				.text("TEXT")
 				.modifiedBy("modifiedBy")
 				.modifiedAt(dateTime)
+				.done(false)
 				.build();
 		assertFalse(item1.equalsAnotherItem(item2));
+
+		item2 = Item.builder()
+				.text("text")
+				.modifiedBy("modifiedBy")
+				.modifiedAt(dateTime)
+				.done(true)
+				.build();
+		assertFalse(item1.equalsAnotherItem(item2));
+
 	}
 }

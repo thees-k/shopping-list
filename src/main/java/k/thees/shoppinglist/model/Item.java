@@ -39,9 +39,12 @@ public class Item {
 
 	private LocalDateTime modifiedAt;
 
+	private Boolean done;
+
 	public boolean equalsAnotherItem(Item otherItem) {
 		return Objects.equals(text, otherItem.text)
 				&& Objects.equals(modifiedBy, otherItem.modifiedBy)
-				&& Objects.equals(modifiedAt, otherItem.modifiedAt);
+				&& Objects.equals(modifiedAt, otherItem.modifiedAt)
+				&& Objects.equals(done, otherItem.done);
 	}
 }
