@@ -60,44 +60,22 @@ function loadAllItems() {
 }
 
 
+function displayAllItems() {    
+    console.log("displayAllItems");
 
-function displayAllItems() {
-    var success = function(data, textStatus, jqXHR) {
+    var outputHtml = "";
+    var items = loadAllItems();
+    console.log(items.length);
+    console.log(items);
 
-        $("#itemList").html("");
-
-        //console.log("data:");        
-        //console.log(data);
-        var outputHtml = "";
-        for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-            /*
-            console.log(item.id);
-            console.log(item.version);
-            console.log(item.text);
-            console.log(item.modifiedBy);
-            console.log(item.modifiedAt);
-            console.log(item.done);
-            */
-            // outputHtml += "<li>" + item.text + " ("+ item.modifiedBy +")</li>"
-            outputHtml += "<div>" + createItemRow(item) + "</div>";
-        }
-        $("#itemList").html(outputHtml);
-
-        /*
-        console.log("textStatus:");
-        console.log(textStatus);        
-        console.log("jqXHR:");
-        console.log(jqXHR);
-        */
+    for (var i = 0; i < items.length; i++) {
+        console.log(items[i]);
     }
-    var settings = {
-        url: "http://localhost:8080/api/v1/items",
-        contentType: "application/json",
-        method: "GET",
-        success: success
-    }
-    $.ajax(settings);
+    items.forEach(item => {
+        console.log("++++++++++++ " + item);
+        outputHtml += "<div>" + createItemRow(item) + "</div>";
+    });
+    $("#itemList").html(outputHtml);
 }
 
 displayAllItems();
