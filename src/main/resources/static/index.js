@@ -38,15 +38,32 @@ $("#addButton").click(event => {
 
 function createItemRow(item) {
     var checked = item.done === true? "checked" : "";
-    return '<input type="checkbox" class="itemCheckbox" name="itemCheckbox'+ item.id + '" value="'+ item.id + '" ' + checked +'>' +
-           '<label for="itemCheckbox'+ item.id + '">' + item.text + '</label>';  
+    var itemId = item.id;
+    return '<input type="checkbox" class="itemCheckbox" name="itemCheckbox'+ itemId + '" value="'+ itemId + '" ' + checked +'>' +
+           '<label for="itemCheckbox'+ itemId + '">' + item.text + '</label>';  
 }
 
-function loadAllItems() {
-    var items = [];
+function loadAllItemsAndExecute(executeFunction) {    
     var success = function(data, textStatus, jqXHR) {
+        var items = [];
         for (var i = 0; i < data.length; i++) {            
             items.push(data[i]);
+        }
+        executeFunction(items);
+    }
+    var settings = {
+        url: "http://localhost:8080/api/v1/items",
+        contentType: "application/json",
+        method: "GET",
+        success: success
+    }
+    $.ajax(settings);
+}
+
+function loadItemsAndExecuteOnEachItem(executeFunction) {    
+    var success = function(data, textStatus, jqXHR) {
+        for (var i = 0; i < data.length; i++) {            
+            executeFunction(data[i]);
         }
     }
     var settings = {
@@ -56,29 +73,31 @@ function loadAllItems() {
         success: success
     }
     $.ajax(settings);
-    return items;
 }
 
-
-function displayAllItems() {    
-    console.log("displayAllItems");
-
-    var outputHtml = "";
-    var items = loadAllItems();
-    console.log(items.length);
-    console.log(items);
-
-    for (var i = 0; i < items.length; i++) {
-        console.log(items[i]);
-    }
-    items.forEach(item => {
-        console.log("++++++++++++ " + item);
-        outputHtml += "<div>" + createItemRow(item) + "</div>";
-    });
-    $("#itemList").html(outputHtml);
+function displayAllItems() {
+    loadAllItemsAndExecute(items => {
+        var outputHtml = "";
+        items.forEach(item => {
+            outputHtml += "<div>" + createItemRow(item) + "</div>";
+        });
+        $("#itemList").html(outputHtml);
+        addEventsToItemCheckboxes();
+    });    
 }
 
 displayAllItems();
+
+function addEventsToItemCheckboxes() {
+    $(".itemCheckbox").click(event => {
+        var checkbox = event.currentTarget;
+        var itemId = checkbox.value;
+        var isCheckedNow = checkbox.checked;        
+        console.log("\titemId " + itemId +" (" + isCheckedNow + ")");
+
+        // TODO
+    });    
+}
 
 
 /*
