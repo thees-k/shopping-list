@@ -128,7 +128,9 @@ class ItemServiceTest {
 	@Test
 	public void testPatchWithModifiedAt() {
 
-		Item oldItem = itemService.get(1).get();
+		final int itemId = 1;
+
+		Item oldItem = itemService.get(itemId).get();
 		var oldDone = oldItem.getDone();
 		// var oldModifiedAt = oldItem.getModifiedAt();
 		var oldModifiedBy = oldItem.getModifiedBy();
@@ -142,12 +144,12 @@ class ItemServiceTest {
 				.modifiedAt(newModifiedAt)
 				.build();
 
-		Item patchedItem = itemService.patch(1, item).orElseThrow(AssertionError::new);
+		Item patchedItem = itemService.patch(itemId, item).orElseThrow(AssertionError::new);
 
 		// Validation only takes place when writing to the database
 		itemRepository.flush();
 
-		assertEquals(1, patchedItem.getId());
+		assertEquals(itemId, patchedItem.getId());
 		assertEquals(oldVersion + 1, patchedItem.getVersion());
 		assertEquals(oldDone, patchedItem.getDone());
 		assertEquals(oldModifiedBy, patchedItem.getModifiedBy());
@@ -160,7 +162,9 @@ class ItemServiceTest {
 	@Test
 	public void testPatchWithDone() {
 
-		Item oldItem = itemService.get(2).get();
+		final int itemId = 2;
+
+		Item oldItem = itemService.get(itemId).get();
 		// var oldDone = oldItem.getDone();
 		var oldModifiedAt = oldItem.getModifiedAt();
 		var oldModifiedBy = oldItem.getModifiedBy();
@@ -172,12 +176,12 @@ class ItemServiceTest {
 				.done(true)
 				.build();
 
-		Item patchedItem = itemService.patch(2, item).orElseThrow(AssertionError::new);
+		Item patchedItem = itemService.patch(itemId, item).orElseThrow(AssertionError::new);
 
 		// Validation only takes place when writing to the database
 		itemRepository.flush();
 
-		assertEquals(2, patchedItem.getId());
+		assertEquals(itemId, patchedItem.getId());
 		assertEquals(oldVersion + 1, patchedItem.getVersion());
 		assertEquals(oldModifiedAt, patchedItem.getModifiedAt());
 		assertEquals(oldModifiedBy, patchedItem.getModifiedBy());
