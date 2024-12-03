@@ -188,7 +188,43 @@ class ItemServiceTest {
 		assertEquals(oldText, patchedItem.getText());
 
 		assertEquals(true, patchedItem.getDone());
-
 	}
 
+	@Transactional
+	@Rollback
+	@Test
+	public void testPatchWithDoneAndModifiedAt() {
+
+		final int itemId = 2;
+
+		var newModifiedAt = LocalDateTime.of(2020, 1, 2, 3, 4);
+
+		Item oldItem = itemService.get(itemId).get();
+
+		assert(oldItem.getDone() != true);
+		assert(oldItem.getModifiedAt().compareTo(newModifiedAt) != 0);
+
+		var oldModifiedBy = oldItem.getModifiedBy();
+		var oldText = oldItem.getText();
+		var oldVersion = oldItem.getVersion();
+
+		Item item = Item
+				.builder()
+				.done(true)
+				.modifiedAt(newModifiedAt)
+				.build();
+
+		Item patchedItem = itemService.patch(itemId, item).orElseThrow(AssertionError::new);
+
+		// Validation only takes place when writing to the database
+		itemRepository.flush();
+
+		assertEquals(itemId, patchedItem.getId());
+		assertEquals(oldVersion + 1, patchedItem.getVersion());
+		assertEquals(oldModifiedBy, patchedItem.getModifiedBy());
+		assertEquals(oldText, patchedItem.getText());
+
+		assertEquals(true, patchedItem.getDone());
+		assertEquals(newModifiedAt, patchedItem.getModifiedAt());
+	}
 }
