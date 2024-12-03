@@ -98,9 +98,24 @@ function addEventsToItemCheckboxes() {
         var checkbox = event.currentTarget;
         var itemId = checkbox.value;
         var isCheckedNow = checkbox.checked;        
-        console.log("\titemId " + itemId +" (" + isCheckedNow + ")");
-
-        // TODO
+        
+        var now = new Date().toISOString(); // TODO Correct timezone
+        var data = {
+            "done": isCheckedNow,
+            "modifiedAt": now,
+            "modifiedBy": user
+        }    
+        var success = function(data, textStatus, jqXHR) {
+            displayAllItems();
+        }
+        var settings = {
+            url: "http://localhost:8080/api/v1/items/" + itemId,
+            contentType: "application/json",
+            method: "PATCH",
+            data: JSON.stringify(data),
+            success: success
+        }
+        $.ajax(settings);    
     });    
 }
 
