@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -13,6 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -248,8 +251,6 @@ class ItemRestControllerTest {
 		}
 	}
 
-	@Rollback
-	@Transactional
 	@Test
 	void testUpdateButNotFound() throws Exception {
 
@@ -266,4 +267,54 @@ class ItemRestControllerTest {
 				.content(objectMapper.writeValueAsString(updateItem)))
 		.andExpect(status().isNotFound());
 	}
+
+	@Rollback
+	@Transactional
+	@Test
+	void testPatch() throws JsonProcessingException, Exception {
+
+		LocalDateTime newModifiedAt = LocalDateTime.of(2030, 1, 2, 3, 4, 5, 6);
+
+		final int itemId = 2;
+		Item item = itemRepository.findById(itemId).get();
+
+		assert(item.getDone() != true);
+		assert(item.getModifiedAt().compareTo(newModifiedAt) != 0);
+
+		var oldModifiedBy = item.getModifiedBy();
+		var oldVersion = item.getVersion();
+		var oldText = item.getText();
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("done", true);
+		map.put("modifiedAt", newModifiedAt);
+
+		mockMvc.perform(patch(ItemRestController.ITEMS_PATH_ID, itemId)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(map)))
+		.andExpect(status().isNoContent());
+
+		itemRepository.flush();
+
+		item = itemRepository.findById(itemId).get();
+
+		assertEquals(oldVersion + 1, item.getVersion());
+		assertEquals(oldModifiedBy, item.getModifiedBy());
+		assertEquals(oldText, item.getText());
+
+		assertEquals(newModifiedAt, item.getModifiedAt());
+		assertTrue(item.getDone());
+	}
+
+	@Test
+	void testPatchButNotFound() throws Exception {
+
+		mockMvc.perform(patch(ItemRestController.ITEMS_PATH_ID, -1)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(Item.builder().build())))
+		.andExpect(status().isNotFound());
+	}
+
 }
