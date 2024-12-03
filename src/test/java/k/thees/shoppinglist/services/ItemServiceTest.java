@@ -122,4 +122,69 @@ class ItemServiceTest {
 	public void testDeleteNotFound() {
 		assertFalse(itemService.delete(4));
 	}
+
+	@Transactional
+	@Rollback
+	@Test
+	public void testPatchWithModifiedAt() {
+
+		Item oldItem = itemService.get(1).get();
+		var oldDone = oldItem.getDone();
+		// var oldModifiedAt = oldItem.getModifiedAt();
+		var oldModifiedBy = oldItem.getModifiedBy();
+		var oldText = oldItem.getText();
+		var oldVersion = oldItem.getVersion();
+
+		var newModifiedAt = LocalDateTime.of(2020, 1, 2, 3, 4);
+
+		Item item = Item
+				.builder()
+				.modifiedAt(newModifiedAt)
+				.build();
+
+		Item patchedItem = itemService.patch(1, item).orElseThrow(AssertionError::new);
+
+		// Validation only takes place when writing to the database
+		itemRepository.flush();
+
+		assertEquals(1, patchedItem.getId());
+		assertEquals(oldVersion + 1, patchedItem.getVersion());
+		assertEquals(oldDone, patchedItem.getDone());
+		assertEquals(oldModifiedBy, patchedItem.getModifiedBy());
+		assertEquals(oldText, patchedItem.getText());
+		assertEquals(newModifiedAt, patchedItem.getModifiedAt());
+	}
+
+	@Transactional
+	@Rollback
+	@Test
+	public void testPatchWithDone() {
+
+		Item oldItem = itemService.get(2).get();
+		// var oldDone = oldItem.getDone();
+		var oldModifiedAt = oldItem.getModifiedAt();
+		var oldModifiedBy = oldItem.getModifiedBy();
+		var oldText = oldItem.getText();
+		var oldVersion = oldItem.getVersion();
+
+		Item item = Item
+				.builder()
+				.done(true)
+				.build();
+
+		Item patchedItem = itemService.patch(2, item).orElseThrow(AssertionError::new);
+
+		// Validation only takes place when writing to the database
+		itemRepository.flush();
+
+		assertEquals(2, patchedItem.getId());
+		assertEquals(oldVersion + 1, patchedItem.getVersion());
+		assertEquals(oldModifiedAt, patchedItem.getModifiedAt());
+		assertEquals(oldModifiedBy, patchedItem.getModifiedBy());
+		assertEquals(oldText, patchedItem.getText());
+
+		assertEquals(true, patchedItem.getDone());
+
+	}
+
 }

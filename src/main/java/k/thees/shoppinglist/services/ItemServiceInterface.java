@@ -17,4 +17,6 @@ public interface ItemServiceInterface {
 	Optional<Item> update(Integer id, Item item);
 
 	boolean delete(Integer id);
+
+	Optional<Item> patch(Integer id, Item item);
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -72,4 +73,24 @@ public class ItemRestController {
 				.map(it -> new ResponseEntity<Item>(HttpStatus.NO_CONTENT))
 				.orElseThrow(MyNotFoundException::new);
 	}
+
+	//	PATCH http://localhost:8080/api/v1/items/42 HTTP/1.1
+	//	content-type: application/json
+	//
+	//	{
+	//	    "text": "New item text",
+	//	}
+	//
+	// (Note that the empty line after the header is important!)
+	//
+	// Patch = To update only the fields listed inside the JSON
+	// The values of the not listed fields will be null inside the item
+	@PatchMapping(ITEMS_PATH_ID)
+	public ResponseEntity<Item> patch(@PathVariable Integer id, @RequestBody Item item) {
+
+		return itemService.patch(id, item)
+				.map(it -> new ResponseEntity<Item>(HttpStatus.NO_CONTENT))
+				.orElseThrow(MyNotFoundException::new);
+	}
+
 }

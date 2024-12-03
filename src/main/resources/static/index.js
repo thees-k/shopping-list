@@ -1,9 +1,17 @@
 
-// console.log("Hello " + user);
+// see https://philna.sh/blog/2021/04/11/dont-ever-write-your-own-function-to-parse-url-parameters/
+var user = new URLSearchParams(window.location.search.substring(1)).get("user");
 
-// alert("hello " + user);
+if (user === null) {
+    document.getElementById("bigTitle").textContent = "Enter your name, please";
+} else {
+    document.getElementById("bigTitle").textContent = "Hello " + user;
+    
+    // document.forms['user'].elements['user'].value = user;
+    document.forms.user.user.value = user;
+}
 
-// document.getElementsByTagName("span")[0].textContent = "" + new Date();
+displayAllItems();
 
 $("#addButton").click(event => {
     var enteredText = $("#newItemInput").val();
@@ -34,7 +42,6 @@ $("#addButton").click(event => {
     }
     $.ajax(settings);
 });
-
 
 function createItemRow(item) {
     var checked = item.done === true? "checked" : "";
@@ -85,8 +92,6 @@ function displayAllItems() {
         addEventsToItemCheckboxes();
     });    
 }
-
-displayAllItems();
 
 function addEventsToItemCheckboxes() {
     $(".itemCheckbox").click(event => {

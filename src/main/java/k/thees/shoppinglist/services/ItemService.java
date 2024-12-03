@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import io.micrometer.common.util.StringUtils;
 import k.thees.shoppinglist.model.Item;
 import k.thees.shoppinglist.repositories.ItemRepositoryInterface;
 import lombok.RequiredArgsConstructor;
@@ -58,4 +59,26 @@ public class ItemService implements ItemServiceInterface {
 			return false;
 		}
 	}
+
+	@Override
+	public Optional<Item> patch(Integer id, Item changedItem) {
+		return itemRepository.findById(id).map(item -> patchItemWithNewValues(item, changedItem));
+	}
+
+	private Item patchItemWithNewValues(Item item, Item valuesFromItem) {
+		if(valuesFromItem.getModifiedAt() != null) {
+			item.setModifiedAt(valuesFromItem.getModifiedAt());
+		}
+		if(!StringUtils.isBlank(valuesFromItem.getModifiedBy())) {
+			item.setModifiedBy(valuesFromItem.getModifiedBy());
+		}
+		if(!StringUtils.isBlank(valuesFromItem.getText())) {
+			item.setText(valuesFromItem.getText());
+		}
+		if(valuesFromItem.getDone() != null) {
+			item.setDone(valuesFromItem.getDone());
+		}
+		return itemRepository.save(item);
+	}
+
 }
