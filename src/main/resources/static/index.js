@@ -6,10 +6,10 @@ if (user === null) {
     document.getElementById("bigTitle").textContent = "Enter your name, please";
 } else {
     document.getElementById("bigTitle").textContent = "Hello " + user;
-    
-    // document.forms['user'].elements['user'].value = user;
     document.forms.user.user.value = user;
 }
+
+var itemNameMap = {};
 
 displayAllItems();
 
@@ -97,10 +97,12 @@ function loadItemsAndExecuteOnEachItem(executeFunction) {
 }
 
 function displayAllItems() {
+    itemNameMap = { };
     loadAllItemsAndExecute(items => {
         var outputHtml = "";
         items.forEach(item => {
             outputHtml += '<div id="itemId_' + item.id + '">' + createItemRow(item) + '</div>';
+            itemNameMap["_" + item.id] = item.text;
         });
         $("#itemList").html(outputHtml);
         addEventsToItemCheckboxes();
@@ -134,21 +136,28 @@ function addEventsToItemCheckboxes() {
     });    
 }
 
+function sendDeleteRequest(itemId) {
+    var success = function(data, textStatus, jqXHR) {
+        displayAllItems();
+    }
+    var settings = {
+        url: "http://localhost:8080/api/v1/items/" + itemId,
+        contentType: "application/json",
+        method: "DELETE",
+        success: success
+    }
+    $.ajax(settings);    
+}
+
 function addEventsToItemRemoveIcons() {
     $(".itemRemoveIcon").click(event => {
         var icon = event.currentTarget;
         var itemId = icon.parentElement.id.split("_")[1];
         // console.log("Remove icon was clicked. " + itemId);
-        
-        var success = function(data, textStatus, jqXHR) {
-            displayAllItems();
+        var text = itemNameMap["_" + itemId];
+        if (confirm('Really delete ' + text + ' ?') == true) {
+            sendDeleteRequest(itemId);
         }
-        var settings = {
-            url: "http://localhost:8080/api/v1/items/" + itemId,
-            contentType: "application/json",
-            method: "DELETE",
-            success: success
-        }
-        $.ajax(settings);    
     });    
 }
+

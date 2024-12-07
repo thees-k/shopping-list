@@ -8,3 +8,8 @@
     color:red;
     margin-left:2px;
 }
+
+body {
+    position: relative;
+    left: 30px;
+}
