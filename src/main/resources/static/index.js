@@ -13,7 +13,7 @@ if (user === null) {
 
 displayAllItems();
 
-$("#addButton").click(event => {
+function addItemFunction() {
     var enteredText = $("#newItemInput").val();
     if ($.trim(enteredText) === "") {
         return;
@@ -41,7 +41,17 @@ $("#addButton").click(event => {
         success: success
     }
     $.ajax(settings);
-});
+} 
+
+$("#addButton").click(addItemFunction);
+
+$("#newItemInput").keypress(event => {
+    var key = event.which;
+    if (key === 13) { // 13 is the enter key code      
+      addItemFunction();
+    }
+  });
+  
 
 function createItemRow(item) {
     var checked = item.done === true? "checked" : "";
