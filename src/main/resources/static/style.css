@@ -1,0 +1,10 @@
+
+.itemCheckbox {
+    margin-right: 4px !important;
+}
+
+.itemRemoveIcon {
+    font-size:15px;
+    color:red;
+    margin-left:2px;
+}

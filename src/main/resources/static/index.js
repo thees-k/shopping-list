@@ -47,7 +47,11 @@ function createItemRow(item) {
     var checked = item.done === true? "checked" : "";
     var itemId = item.id;
     return '<input type="checkbox" class="itemCheckbox" name="itemCheckbox'+ itemId + '" value="'+ itemId + '" ' + checked +'>' +
-           '<label for="itemCheckbox'+ itemId + '">' + item.text + '</label>';  
+           '<label for="itemCheckbox'+ itemId + '">' + item.text + '</label>' + createDeleteIcon(itemId);  
+}
+
+function createDeleteIcon(itemId) {
+    return '<i class="glyphicon glyphicon-remove itemRemoveIcon"'+ ' value="'+itemId +'"></i>';
 }
 
 function loadAllItemsAndExecute(executeFunction) {    
@@ -86,10 +90,11 @@ function displayAllItems() {
     loadAllItemsAndExecute(items => {
         var outputHtml = "";
         items.forEach(item => {
-            outputHtml += "<div>" + createItemRow(item) + "</div>";
+            outputHtml += '<div id="itemId_' + item.id + '">' + createItemRow(item) + '</div>';
         });
         $("#itemList").html(outputHtml);
         addEventsToItemCheckboxes();
+        addEventsToItemRemoveIcons();
     });    
 }
 
@@ -119,17 +124,21 @@ function addEventsToItemCheckboxes() {
     });    
 }
 
-
-/*
-POST http://localhost:8080/recordings HTTP/1.1
-content-type: application/json
-
-{
-    "beginTime": "2024-12-24T20:30:00",
-    "endTime": "2024-12-24T23:15:00",
-    "url": "http://ndr-kultur.de/stream",
-    "title": "Weihnachtsspezial",
-    "details": "Diversa",
-    "id": "3"
+function addEventsToItemRemoveIcons() {
+    $(".itemRemoveIcon").click(event => {
+        var icon = event.currentTarget;
+        var itemId = icon.parentElement.id.split("_")[1];
+        // console.log("Remove icon was clicked. " + itemId);
+        
+        var success = function(data, textStatus, jqXHR) {
+            displayAllItems();
+        }
+        var settings = {
+            url: "http://localhost:8080/api/v1/items/" + itemId,
+            contentType: "application/json",
+            method: "DELETE",
+            success: success
+        }
+        $.ajax(settings);    
+    });    
 }
-*/
