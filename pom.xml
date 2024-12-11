@@ -8,11 +8,11 @@
 		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>k.thees</groupId>
 	<artifactId>shopping-list</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>shopping-list</name>
-	<description>Shopping List</description>
+	<description>Shopping List - Single Page Application</description>
 	<url/>
 	<licenses>
 		<license/>
