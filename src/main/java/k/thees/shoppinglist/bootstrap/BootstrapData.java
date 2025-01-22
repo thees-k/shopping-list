@@ -6,7 +6,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import k.thees.shoppinglist.model.Item;
+import k.thees.shoppinglist.model.User;
 import k.thees.shoppinglist.repositories.ItemRepositoryInterface;
+import k.thees.shoppinglist.repositories.UserRepositoryInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,12 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 public class BootstrapData implements CommandLineRunner {
 
 	private final ItemRepositoryInterface itemRepository;
+	private final UserRepositoryInterface userRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
 
 		log.debug("BootstrapData started");
 		insertItemData();
+		insertUserData();
 	}
 
 	private void insertItemData() {
@@ -55,4 +59,22 @@ public class BootstrapData implements CommandLineRunner {
 			log.debug("Inserted new items");
 		}
 	}
+
+	private void insertUserData() {
+		if(userRepository.count() == 0) {
+			var now = LocalDateTime.now();
+
+			User user1 = User.builder()
+					.modifiedAt(now)
+					.loginName("test")
+					.password("test")
+					.name("Test User")
+					.build();
+
+			userRepository.save(user1);
+
+			log.debug("Inserted new user");
+		}
+	}
+
 }
