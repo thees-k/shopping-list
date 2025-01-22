@@ -68,7 +68,13 @@
   			<groupId>org.joinfaces</groupId>
   			<artifactId>jsf-spring-boot-starter</artifactId>
   			<version>5.4.1</version>
-		</dependency>
+		</dependency>		
+		<dependency>
+			<!-- https://mvnrepository.com/artifact/jakarta.enterprise/jakarta.enterprise.cdi-api -->
+    		<groupId>jakarta.enterprise</groupId>
+    		<artifactId>jakarta.enterprise.cdi-api</artifactId>
+    		<version>4.1.0</version>
+		</dependency>		
 	</dependencies>
 
 	<build>

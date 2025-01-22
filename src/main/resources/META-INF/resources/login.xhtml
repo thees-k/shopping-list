@@ -4,8 +4,22 @@
     <title>Shopping List - Login</title>
 </h:head>
 <h:body>
-    <h:form>
-        <h:outputLabel value="Todo: implement!" />
-    </h:form>
+		
+	<h:form>
+		<h3>JSF Login Logout</h3>
+		<h:outputText value="Username" />
+		<h:inputText id="username" value="#{login.loginName}"></h:inputText>
+		<h:message for="username"></h:message>
+		<br></br><br></br>
+		
+		<h:outputText value="Password" />
+		<h:inputSecret id="password" value="#{login.password}"></h:inputSecret>
+		<h:message for="password"></h:message>
+		<br></br><br></br>
+		
+		<h:commandButton action="#{login.validate}"
+			value="Login"></h:commandButton>
+	</h:form>
+	
 </h:body>
 </html>
