@@ -4,9 +4,14 @@
 }
 
 .itemRemoveIcon {
-    font-size:15px;
+    font-weight:bold;
     color:red;
-    margin-left:2px;
+    margin-left:2px;    
+}
+
+.itemRemoveIcon:hover {
+	cursor: -webkit-grab;
+	cursor: grab;
 }
 
 body {
