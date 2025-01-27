@@ -74,7 +74,7 @@ class ItemRestControllerTest {
 				.andExpect(buildMatcher("text", item.getText()))
 				.andExpect(buildMatcher("modifiedBy", item.getModifiedBy()))
 				.andExpect(buildMatcher("modifiedAt", item.getModifiedAt()))
-				.andExpect(buildMatcher("done", item.getDone()))
+				.andExpect(buildMatcher("done", item.isDone()))
 				.andReturn();
 
 		// Get the JSON response as a string
@@ -278,7 +278,7 @@ class ItemRestControllerTest {
 		final int itemId = 2;
 		Item item = itemRepository.findById(itemId).get();
 
-		assert(item.getDone() != true);
+		assert(item.isDone() != true);
 		assert(item.getModifiedAt().compareTo(newModifiedAt) != 0);
 
 		var oldModifiedBy = item.getModifiedBy();
@@ -304,7 +304,7 @@ class ItemRestControllerTest {
 		assertEquals(oldText, item.getText());
 
 		assertEquals(newModifiedAt, item.getModifiedAt());
-		assertTrue(item.getDone());
+		assertTrue(item.isDone());
 	}
 
 	@Test

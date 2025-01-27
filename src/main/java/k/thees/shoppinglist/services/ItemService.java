@@ -45,7 +45,7 @@ public class ItemService implements ItemServiceInterface {
 		item.setModifiedAt(valuesFromItem.getModifiedAt());
 		item.setModifiedBy(valuesFromItem.getModifiedBy());
 		item.setText(valuesFromItem.getText());
-		item.setDone(valuesFromItem.getDone());
+		item.setDone(valuesFromItem.isDone());
 		return itemRepository.save(item);
 	}
 
@@ -75,9 +75,7 @@ public class ItemService implements ItemServiceInterface {
 		if(!StringUtils.isBlank(valuesFromItem.getText())) {
 			item.setText(valuesFromItem.getText());
 		}
-		if(valuesFromItem.getDone() != null) {
-			item.setDone(valuesFromItem.getDone());
-		}
+		item.setDone(valuesFromItem.isDone());
 		return itemRepository.save(item);
 	}
 }

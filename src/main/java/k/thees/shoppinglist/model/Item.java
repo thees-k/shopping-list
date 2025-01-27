@@ -40,8 +40,8 @@ public class Item {
 	private String modifiedBy;
 
 	private LocalDateTime modifiedAt;
-
-	private Boolean done;
+	
+	private boolean done;
 
 	public boolean equalsAnotherItem(Item otherItem) {
 		return Objects.equals(text, otherItem.text)

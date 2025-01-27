@@ -131,7 +131,7 @@ class ItemServiceTest {
 		final int itemId = 1;
 
 		Item oldItem = itemService.get(itemId).get();
-		var oldDone = oldItem.getDone();
+		var oldDone = oldItem.isDone();
 		// var oldModifiedAt = oldItem.getModifiedAt();
 		var oldModifiedBy = oldItem.getModifiedBy();
 		var oldText = oldItem.getText();
@@ -142,6 +142,7 @@ class ItemServiceTest {
 		Item item = Item
 				.builder()
 				.modifiedAt(newModifiedAt)
+				.done(oldDone)
 				.build();
 
 		Item patchedItem = itemService.patch(itemId, item).orElseThrow(AssertionError::new);
@@ -151,7 +152,7 @@ class ItemServiceTest {
 
 		assertEquals(itemId, patchedItem.getId());
 		assertEquals(oldVersion + 1, patchedItem.getVersion());
-		assertEquals(oldDone, patchedItem.getDone());
+		assertEquals(oldDone, patchedItem.isDone());
 		assertEquals(oldModifiedBy, patchedItem.getModifiedBy());
 		assertEquals(oldText, patchedItem.getText());
 		assertEquals(newModifiedAt, patchedItem.getModifiedAt());
@@ -187,7 +188,7 @@ class ItemServiceTest {
 		assertEquals(oldModifiedBy, patchedItem.getModifiedBy());
 		assertEquals(oldText, patchedItem.getText());
 
-		assertEquals(true, patchedItem.getDone());
+		assertEquals(true, patchedItem.isDone());
 	}
 
 	@Transactional
@@ -201,7 +202,7 @@ class ItemServiceTest {
 
 		Item oldItem = itemService.get(itemId).get();
 
-		assert(oldItem.getDone() != true);
+		assert(oldItem.isDone() != true);
 		assert(oldItem.getModifiedAt().compareTo(newModifiedAt) != 0);
 
 		var oldModifiedBy = oldItem.getModifiedBy();
@@ -224,7 +225,7 @@ class ItemServiceTest {
 		assertEquals(oldModifiedBy, patchedItem.getModifiedBy());
 		assertEquals(oldText, patchedItem.getText());
 
-		assertEquals(true, patchedItem.getDone());
+		assertEquals(true, patchedItem.isDone());
 		assertEquals(newModifiedAt, patchedItem.getModifiedAt());
 	}
 }
