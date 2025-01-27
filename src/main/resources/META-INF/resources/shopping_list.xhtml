@@ -1,23 +1,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-	  <h:head>
-	      <title>Shopping List</title>
-	  </h:head>
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <!-- Bootstrap CSS -->
+    <h:outputStylesheet library="css" name="bootstrap.min.css" target="head" />
+    <h:outputStylesheet library="css" name="shopping_list.css" target="head" />
+	<title>Shopping List</title>
+</h:head>
 <h:body>
 
-<h1 id="bigTitle"></h1>
-    <form name="user">
-      <label>User:</label>
-      <input type="text" name="user" value="" />
-      <input type="submit" value="Submit" />
-    </form>
-    <br></br>
-    <div id="itemList"></div>
-    <label>New Item:</label>    
-    <input type="text" id="newItemInput" />
-    <button id="addButton" type="button">Add</button>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="shopping_list.js" charset="utf-8"></script>
-
+	<h2>
+		<h:outputText value="Hello #{login.loadUserName()}" />
+	</h2>
+	<div id="itemList"></div>
+	<br />
+	<label>New Item:</label>
+	<input type="text" id="newItemInput" />
+	<button id="addButton" type="button">Add</button>
+	
+	<!--  
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	-->
+	<script>
+		const shopping_list_user="#{login.loadUserName()}";
+	</script>
+	<h:outputScript library="js" name="jquery.min.js" target="body" />
+	<h:outputScript library="js" name="shopping_list.js" target="body" />
+	
 </h:body>
 </html>
