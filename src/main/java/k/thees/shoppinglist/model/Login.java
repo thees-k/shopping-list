@@ -1,6 +1,7 @@
 package k.thees.shoppinglist.model;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -29,14 +30,25 @@ public class Login implements Serializable {
 	private String loginName;
 	private String password;
 	private String message;
-
-	public String validate() {
-
+	
+	private Optional<User> loadUser() {
 		Example<User> example = Example.of(User.builder().loginName(loginName).build());
 
 		return userRepository.findOne(example)
-				.filter(user -> user.getPassword().equals(password))
+				.filter(user -> user.getPassword().equals(password));
+	}
+
+	public String validate() {
+		
+		return loadUser()
 				.map(it -> "shopping_list")
 				.orElse("login");
+	}
+	
+	public String loadUserName() {
+		
+		return loadUser()
+				.map(User::getName)
+				.orElse("User not found");
 	}
 }
