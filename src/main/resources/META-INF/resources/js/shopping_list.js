@@ -1,51 +1,49 @@
 
-var itemNameMap = {};
+var user = shopping_list_user;
 
-var user = "Duke Nukem";
+var itemNameMap = {};
 
 displayAllItems();
 
 function addItemFunction() {
-    const newItemInput = document.getElementById("newItemInput");
-    const enteredText = newItemInput.value;
-    if (enteredText.trim() === "") {
+    var enteredText = $("#newItemInput").val();
+    if ($.trim(enteredText) === "") {
         return;
     }
-    const now = new Date().toISOString(); // TODO Correct timezone
-    const data = {
+    var now = new Date().toISOString(); // TODO Correct timezone
+    var data = {
         "text": enteredText,
         "modifiedBy": user,
         "modifiedAt": now
-    };	
-    
-    fetch("http://localhost:8080/api/v1/items", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
-        if (!response.ok) {			
-            throw new Error('Network response was not okay: Status Code ' + response.status);
-        }
-    })
-    .then(() => {
+    }    
+    var success = function(data, textStatus, jqXHR) {
+        /*
+        console.log("data:\n" + data);
+        console.log("textStatus:\n" + textStatus);
+        console.log("jqXHR:\n" + jqXHR);
+        */
         displayAllItems();
-        newItemInput.value = "";
-    })
-    .catch(error => {
-		alert(error);
-    });
-}
-
-document.getElementById("addButton").addEventListener('click', addItemFunction);
-
-document.getElementById("newItemInput").addEventListener('keypress', event => {
-    if (event.key === 'Enter') {
-        addItemFunction();
+        $("#newItemInput").val("");
     }
-});  
+    var settings = {
+        url: "http://localhost:8080/api/v1/items",
+        contentType: "application/json",
+        method: "POST",
+        data: JSON.stringify(data),
+        success: success
+    }
+    $.ajax(settings);
+} 
+
+$("#addButton").click(addItemFunction);
+
+$("#newItemInput").keypress(event => {
+    var key = event.which;
+    if (key === 13) { // 13 is the enter key code      
+      addItemFunction();
+    }
+  });
+  
 
 function createItemRow(item) {
     var checked = item.done === true? "checked" : "";
@@ -55,8 +53,7 @@ function createItemRow(item) {
 }
 
 function createDeleteIcon(itemId) {
-    // return '<i class="glyphicon glyphicon-remove itemRemoveIcon"'+ ' value="'+itemId +'"></i>';
-	return '<span class="itemRemoveIcon"'+ ' value="'+itemId +'">&#11199;</span>'
+    return '<span class="itemRemoveIcon"'+ ' value="'+itemId +'">&#11199;</span>'
 }
 
 function loadAllItemsAndExecute(executeFunction) {    
@@ -92,49 +89,43 @@ function loadItemsAndExecuteOnEachItem(executeFunction) {
 }
 
 function displayAllItems() {
-	
-	console.log("displayAllItems");
-	
-    itemNameMap = { };
+    itemNameMap = {};
     loadAllItemsAndExecute(items => {
         var outputHtml = "";
         items.forEach(item => {
             outputHtml += '<div id="itemId_' + item.id + '">' + createItemRow(item) + '</div>';
             itemNameMap["_" + item.id] = item.text;
         });
-        document.getElementById("itemList").innerHTML = outputHtml;
+        $("#itemList").html(outputHtml);
         addEventsToItemCheckboxes();
         addEventsToItemRemoveIcons();
     });    
 }
 
 function addEventsToItemCheckboxes() {
-	for (cb of document.getElementsByClassName("itemCheckbox")) {
-		cb.addEventListener('click', event => {
-
-			var checkbox = event.currentTarget;
-			var itemId = checkbox.value;
-			var isCheckedNow = checkbox.checked;
-
-			var now = new Date().toISOString(); // TODO Correct timezone
-			var data = {
-				"done": isCheckedNow,
-				"modifiedAt": now,
-				"modifiedBy": user
-			}
-			var success = function(data, textStatus, jqXHR) {
-				displayAllItems();
-			}
-			var settings = {
-				url: "http://localhost:8080/api/v1/items/" + itemId,
-				contentType: "application/json",
-				method: "PATCH",
-				data: JSON.stringify(data),
-				success: success
-			}
-			$.ajax(settings);
-		});
-	}
+    $(".itemCheckbox").click(event => {
+        var checkbox = event.currentTarget;
+        var itemId = checkbox.value;
+        var isCheckedNow = checkbox.checked;        
+        
+        var now = new Date().toISOString(); // TODO Correct timezone
+        var data = {
+            "done": isCheckedNow,
+            "modifiedAt": now,
+            "modifiedBy": user
+        }    
+        var success = function(data, textStatus, jqXHR) {
+            displayAllItems();
+        }
+        var settings = {
+            url: "http://localhost:8080/api/v1/items/" + itemId,
+            contentType: "application/json",
+            method: "PATCH",
+            data: JSON.stringify(data),
+            success: success
+        }
+        $.ajax(settings);    
+    });    
 }
 
 function sendDeleteRequest(itemId) {
@@ -151,17 +142,14 @@ function sendDeleteRequest(itemId) {
 }
 
 function addEventsToItemRemoveIcons() {
-	for (ri of document.getElementsByClassName("itemRemoveIcon")) {
-		ri.addEventListener('click', event => {
-			var icon = event.currentTarget;
-			var itemId = icon.parentElement.id.split("_")[1];
-			// console.log("Remove icon was clicked. " + itemId);
-			var text = itemNameMap["_" + itemId];
-			if (confirm('Really delete ' + text + ' ?') == true) {
-				sendDeleteRequest(itemId);
-			}		
-		});		
-	}	
+    $(".itemRemoveIcon").click(event => {
+        var icon = event.currentTarget;
+        var itemId = icon.parentElement.id.split("_")[1];
+        // console.log("Remove icon was clicked. " + itemId);
+        var text = itemNameMap["_" + itemId];
+        if (confirm('Really delete ' + text + '?')) {
+            sendDeleteRequest(itemId);
+        }
+    });    
 }
-
 
